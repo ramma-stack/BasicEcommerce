@@ -77,7 +77,7 @@
 <script setup>
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { useStore } from 'vuex'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const store = useStore();
 
@@ -93,6 +93,14 @@ const LengthProduct = computed(() => {
 const carts = computed(() => {
     return store.state.cart.carts;
 });
+
+onMounted(() => {
+    fetchCarts();
+});
+
+const fetchCarts = () => {
+    store.dispatch('cart/fetchCarts');
+}
 
 const totalPrice = computed(() => {
     return store.state.cart.carts.reduce((total, product) => total + (product.price * product.quantity), 0);

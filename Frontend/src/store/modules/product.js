@@ -6,9 +6,6 @@ export default {
         return {
             products: [],
             product: {},
-            // pagination: null,
-            // searchQuery: '',
-            // page: 1,
         }
     },
     mutations: {
@@ -17,12 +14,6 @@ export default {
         },
         GET_PRODUCT(state, product) {
             state.product = product
-        },
-        GET_PAGINATION(state, pagination) {
-            state.pagination = pagination
-        },
-        SEARCH_PRODUCTS(state, query) {
-            state.searchQuery = query
         },
     },
     actions: {
@@ -43,14 +34,6 @@ export default {
                 .catch(error => {
                     console.log(error)
                 })
-        },
-        searchProducts(context, query) {
-            context.commit('SEARCH_PRODUCTS', query);
-            context.dispatch('getProducts');
-        },
-        pageChange(context, page) {
-            context.state.page = page;
-            context.dispatch('getProducts');
         },
     },
 }

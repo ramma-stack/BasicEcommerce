@@ -9,7 +9,7 @@ class ProductsCartController extends Controller
 {
     public function index()
     {
-        $carts = CartItem::with('product')
+        $carts = CartItem::with('productList')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -20,21 +20,20 @@ class ProductsCartController extends Controller
 
     public function store(Request $request)
     {
-        $cart = CartItem::where('product_id', $request->product_id);
+        $cart = CartItem::where('product_id', $request->id)->first();
 
-        if ($cart->count()) {
+        if ($cart) {
             $cart->increment('quantity');
-            $cart = $cart->first();
         } else {
-            $cart = CartItem::forceCreate([
-                'product_id' => $request->product_id,
+            $cart = CartItem::create([
+                'product_id' => $request->id,
                 'quantity' => 1,
             ]);
         }
 
         return response()->json([
-            'quantity' => $cart->quantity,
-            'product' => $cart->product,
+            'product' => $cart,
+            'id' => $request->id,
             'message' => 'Item added successfully'
         ]);
     }
