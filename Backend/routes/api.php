@@ -20,5 +20,6 @@ Route::get('/product/{product}', [ProductsController::class, 'show']);
 
 Route::get('/carts', [ProductsCartController::class, 'index']);
 Route::post('/cart', [ProductsCartController::class, 'store']);
+Route::delete('/cart/decrement/{productId}', [ProductsCartController::class, 'decrement']);
 Route::delete('/cart/{productId}', [ProductsCartController::class, 'destroy']);
 Route::delete('/cart', [ProductsCartController::class, 'destroyAll']);

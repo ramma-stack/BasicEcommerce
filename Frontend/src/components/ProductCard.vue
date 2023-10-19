@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden">
+    <div class="w-full max-w-sm mx-auto bg-gray-50 rounded-md shadow-md overflow-hidden">
         <div class="flex items-end justify-end h-48 w-full bg-cover"
             style="background-image: url('https://via.placeholder.com/500x300');">
             <button @click="addToCart(product)"
@@ -13,10 +13,10 @@
             </button>
         </div>
         <div class="px-5 py-3">
-            <router-link :to="{ name: 'product', params: { id: product.id } }" class="block text-gray-200 uppercase">
+            <router-link :to="{ name: 'product', params: { id: product.id } }" class="block text-gray-800 uppercase">
                 {{ product.id }} {{ product.title }}
             </router-link>
-            <span class="text-gray-500 mt-2">${{ product.price }}</span>
+            <span class="text-gray-700 mt-2">${{ product.price }}</span>
         </div>
     </div>
 </template>

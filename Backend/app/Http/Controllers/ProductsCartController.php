@@ -31,20 +31,38 @@ class ProductsCartController extends Controller
             ]);
         }
 
+        $cart = CartItem::with('productList')
+            ->where('product_id', $request->id)
+            ->first();
+
         return response()->json([
-            'product' => $cart,
+            'cart' => $cart,
             'id' => $request->id,
             'message' => 'Item added successfully'
         ]);
     }
 
-    public function destroy($productId)
+    public function decrement($productId)
     {
-        $item = CartItem::where('product_id', $productId)->delete();
+        $cart = CartItem::where('id', $productId)->first();
+
+        if ($cart->quantity > 1) {
+            $cart->decrement('quantity');
+        }
 
         return response()->json([
-            'item' => $item,
-            'message' => 'Item removed successfully'
+            'cart' => $cart,
+            'message' => 'Item decremented successfully'
+        ]);
+    }
+
+    public function destroy($productId)
+    {
+        $cart = CartItem::where('id', $productId)->delete();
+
+        return response()->json([
+            'cart' => $cart,
+            'message' => 'cart removed successfully'
         ]);
     }
 

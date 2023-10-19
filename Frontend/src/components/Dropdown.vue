@@ -8,7 +8,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                 </svg>
-                <div
+                <div v-show="LengthProduct > 0"
                     class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-blue-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">
                     {{ LengthProduct }}
                 </div>
@@ -23,7 +23,7 @@
                         <div v-for="cart in carts" :key="cart.id"
                             class="p-3 flex bg-white cursor-pointer border-b border-gray-100 text-gray-700">
                             <div class="flex-auto text-sm w-32">
-                                <div class="font-bold">{{ cart.title }}</div>
+                                <div class="font-bold">{{ cart.product_list.title }}</div>
                                 <div class="flex gap-2">
                                     <div class="truncate">{{ cart.quantity }} x</div>
                                     <button v-if="cart.quantity > 1"
@@ -36,10 +36,13 @@
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </button>
-                                    <div class="truncate font-bold">${{ cart.price }}</div>
+                                    <div class="truncate font-bold">${{ cart.product_list.price }}</div>
                                 </div>
+                                <!-- <div class="font-bold whitespace-nowrap">
+                                    {{ moment(cart.updated_at).format('Y-MM-DD HH:mm:ss') }}
+                                </div> -->
                             </div>
-                            <div class="flex flex-col w-18 font-medium items-end">
+                            <div class="flex flex-col w-16 font-medium items-end">
                                 <button @click="removeProduct(cart)"
                                     class="w-5 h-5 hover:bg-red-200 rounded-full cursor-pointer text-red-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none"
@@ -75,9 +78,10 @@
 </template>
   
 <script setup>
+import moment from 'moment';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { useStore } from 'vuex'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeMount, onUpdated } from 'vue'
 
 const store = useStore();
 
@@ -91,10 +95,10 @@ const LengthProduct = computed(() => {
 });
 
 const carts = computed(() => {
-    return store.state.cart.carts;
+    return store.getters['cart/cartItems'];
 });
 
-onMounted(() => {
+onBeforeMount(() => {
     fetchCarts();
 });
 
@@ -103,7 +107,7 @@ const fetchCarts = () => {
 }
 
 const totalPrice = computed(() => {
-    return store.state.cart.carts.reduce((total, product) => total + (product.price * product.quantity), 0);
+    return store.state.cart.carts.reduce((total, product) => total + (product.product_list.price * product.quantity), 0);
 });
 
 const removeProduct = (cart) => {

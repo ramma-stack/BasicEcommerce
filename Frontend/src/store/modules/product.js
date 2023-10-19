@@ -17,7 +17,7 @@ export default {
         },
     },
     actions: {
-        getProducts(context, { page, searchQuery }) {
+        async getProducts(context, { page, searchQuery }) {
             axios.get(`products?page=${page}&search=${searchQuery}`)
                 .then(response => {
                     context.commit('GET_PRODUCTS', response.data.products);
