@@ -82,13 +82,13 @@ export default {
                     console.log(error);
                 });
         },
-        fetchCarts(context) {
-            axios.get('carts')
-                .then((response) => {
-                    context.commit('FETCH_CARTS', response.data.carts);
-                }).catch(() => {
-                    console.log('error');
-                });
+        async fetchCarts(context) {
+            try {
+                const response = await axios.get('carts')
+                await context.commit('FETCH_CARTS', response.data.carts)
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 }

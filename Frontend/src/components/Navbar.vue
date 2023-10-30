@@ -17,6 +17,14 @@
             </div>
             <div class="flex items-center justify-end w-full">
                 <DropdownVue />
+                <button type="button" @click="logout"
+                    class="relative inline-flex items-center rounded-md px-3 py-2 text-base font-medium text-white hover:text-opacity-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                    </svg>
+                </button>
             </div>
         </div>
         <div class="relative mt-6 max-w-lg mx-auto">
@@ -38,12 +46,25 @@
 import DropdownVue from './Dropdown.vue';
 import { useStore } from 'vuex';
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const search = ref('')
 
 const store = useStore()
+const router = useRouter()
 
 watch(search, (newSearch) => {
     store.dispatch('product/getProducts', { page: 1, searchQuery: newSearch });
 })
+
+const logout = async () => {
+    try {
+        await store.dispatch('auth/logout');
+        router.push({ name: 'Login' });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 </script>

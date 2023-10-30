@@ -18,22 +18,20 @@ export default {
     },
     actions: {
         async getProducts(context, { page, searchQuery }) {
-            axios.get(`products?page=${page}&search=${searchQuery}`)
-                .then(response => {
-                    context.commit('GET_PRODUCTS', response.data.products);
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+            try {
+                const response = await axios.get(`products?page=${page}&search=${searchQuery}`)
+                await context.commit('GET_PRODUCTS', response.data.products)
+            } catch (error) {
+                console.log(error)
+            }
         },
-        getProduct(context, id) {
-            axios.get(`product/${id}`)
-                .then(response => {
-                    context.commit('GET_PRODUCT', response.data.product);
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-        },
+        async getProduct(context, id) {
+            try {
+                const response = await axios.get(`product/${id}`)
+                await context.commit('GET_PRODUCT', response.data.product)
+            } catch (error) {
+                console.log(error)
+            }
+        }
     },
 }

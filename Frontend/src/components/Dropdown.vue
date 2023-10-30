@@ -102,8 +102,8 @@ onBeforeMount(() => {
     fetchCarts();
 });
 
-const fetchCarts = () => {
-    store.dispatch('cart/fetchCarts');
+const fetchCarts = async () => {
+    await store.dispatch('cart/fetchCarts');
 }
 
 const totalPrice = computed(() => {

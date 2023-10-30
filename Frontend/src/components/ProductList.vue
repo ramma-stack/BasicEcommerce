@@ -11,7 +11,8 @@
                 :active-classes="['bg-blue-600 text-gray-100 rounded-md p-2']" />
         </div>
     </div>
-    <div v-show="loading == false" class="fixed inset-0 flex justify-center items-center overflow-hidden bg-gray-900 bg-opacity-90">
+    <div v-show="loading == false"
+        class="fixed inset-0 flex justify-center items-center overflow-hidden bg-gray-900 bg-opacity-90">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
             class="w-9 h-9 animate-bounce">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -27,6 +28,7 @@ import { computed, onMounted, defineProps, onBeforeMount } from 'vue'
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { ref } from 'vue';
+import axios from 'axios';
 
 const router = useRouter()
 const route = useRoute()
@@ -49,8 +51,8 @@ const products = computed(() => {
     return store.state.product.products;
 });
 
-const getProducts = (page = 1) => {
+const getProducts = async (page = 1) => {
+    await store.dispatch('product/getProducts', { page: page, searchQuery: '' });
     router.push({ path: '/', query: { page: page } });
-    store.dispatch('product/getProducts', { page: page, searchQuery: '' });
 };
 </script>
